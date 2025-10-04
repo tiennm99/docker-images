@@ -22,4 +22,4 @@ RUN export INSTALL_DONT_START_SERVER=1 && \
 
 EXPOSE 8091 8092 11210 11211
 
-CMD ["couchbase-server"]
+CMD ["couchbase-server" "--" "-noinput"]
