@@ -18,18 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Download Couchbase 2.5.2 RPM
-        run: |
-          cd couchbase-2.5
-          wget https://launchpadlibrarian.net/90920725/libgpg-error0_1.10-2ubuntu1_amd64.deb
-          wget https://launchpadlibrarian.net/462496703/libgcrypt11_1.5.0-3ubuntu0.9_amd64.deb
-          wget https://launchpadlibrarian.net/98077365/libp11-kit0_0.12-2ubuntu1_amd64.deb
-          wget https://launchpadlibrarian.net/329563761/libtasn1-3_2.10-1ubuntu1.6_amd64.deb
-          wget https://launchpadlibrarian.net/311120336/libgnutls26_2.12.14-5ubuntu3.14_amd64.deb
-          wget https://launchpadlibrarian.net/320724516/librtmp0_2.4~20110711.gitc28f1bab-1ubuntu0.1_amd64.deb
-          wget https://launchpadlibrarian.net/178402337/libssl0.9.8_0.9.8o-7ubuntu3.2_amd64.deb
-          wget https://packages.couchbase.com/releases/2.5.2/couchbase-server-enterprise_2.5.2_x86_64.deb
-
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -43,7 +31,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/couchbase-2.5
           tags: |
-            type=raw,value=2.5
+            type=raw,value=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4

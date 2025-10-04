@@ -1,27 +1,24 @@
-# Docs: https://docs.couchbase.com/couchbase-manual-2.5/cb-install
-
 FROM ubuntu:12.04
 
 LABEL maintainer="Tien Nguyen Minh <tiennm99@outlook.com>"
 
-COPY *.deb /tmp/
+ARG CB_VERSION=2.5.2
+ARG CB_RELEASE_URL=https://packages.couchbase.com/releases
+ARG CB_PACKAGE=couchbase-server-enterprise_2.5.2_x86_64.deb
 
-RUN dpkg -i /tmp/libgpg-error0_*.deb && \
-    dpkg -i /tmp/libgcrypt11_*.deb && \
-    dpkg -i /tmp/libp11-kit0_*.deb && \
-    dpkg -i /tmp/libtasn1-3_*.deb && \
-    dpkg -i /tmp/libgnutls26_*.deb && \
-    dpkg -i /tmp/librtmp0_*.deb && \
-    dpkg -i /tmp/libssl0.9.8_*.deb && \
-    export INSTALL_DONT_START_SERVER=1 && \
-    dpkg -i /tmp/couchbase-server-enterprise_*.deb && \
-    rm /tmp/*.deb
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Expose ports
-# 8091: Web Administration Port
-# 8092: Couchbase API Port
-# 11210: Internal/External Bucket Port
-# 11211: Client interface (proxy)
-EXPOSE 8091 8092 11210 11211
+RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://old-releases.ubuntu.com/ubuntu/|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ubuntu|g' /etc/apt/sources.list && \
+    apt-get update
+
+RUN apt-get install -y wget
+RUN wget --no-check-certificate $CB_RELEASE_URL/$CB_VERSION/$CB_PACKAGE
+RUN apt-get install -y libssl0.9.8
+RUN apt-get install -y librtmp0
+RUN export INSTALL_DONT_START_SERVER=1 && \
+    dpkg -i ./$CB_PACKAGE && rm -f ./$CB_PACKAGE
+
+EXPOSE 8091, 8092, 11210, 11211
 
 CMD ["/opt/couchbase/bin/couchbase-server", "--", "-noinput"]
