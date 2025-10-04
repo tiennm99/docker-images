@@ -12,6 +12,8 @@ RUN dpkg -i /tmp/libgpg-error0_*.deb && \
     dpkg -i /tmp/libtasn1-3_*.deb && \
     dpkg -i /tmp/libgnutls26_*.deb && \
     dpkg -i /tmp/librtmp0_*.deb && \
+    dpkg -i /tmp/libssl0.9.8_*.deb && \
+    export INSTALL_DONT_START_SERVER=1 && \
     dpkg -i /tmp/couchbase-server-enterprise_*.deb && \
     rm /tmp/*.deb
 
@@ -22,6 +24,4 @@ RUN dpkg -i /tmp/libgpg-error0_*.deb && \
 # 11211: Client interface (proxy)
 EXPOSE 8091 8092 11210 11211
 
-VOLUME /opt/couchbase/var
-
-CMD ["/opt/couchbase/bin/couchbase-server"]
+CMD ["/opt/couchbase/bin/couchbase-server", "--", "-noinput"]

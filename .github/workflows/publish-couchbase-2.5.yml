@@ -27,6 +27,7 @@ jobs:
           wget https://launchpadlibrarian.net/329563761/libtasn1-3_2.10-1ubuntu1.6_amd64.deb
           wget https://launchpadlibrarian.net/311120336/libgnutls26_2.12.14-5ubuntu3.14_amd64.deb
           wget https://launchpadlibrarian.net/320724516/librtmp0_2.4~20110711.gitc28f1bab-1ubuntu0.1_amd64.deb
+          wget https://launchpadlibrarian.net/178402337/libssl0.9.8_0.9.8o-7ubuntu3.2_amd64.deb
           wget https://packages.couchbase.com/releases/2.5.2/couchbase-server-enterprise_2.5.2_x86_64.deb
 
       - name: Log in to GitHub Container Registry
