@@ -19,6 +19,6 @@ RUN apt-get install -y librtmp0
 RUN export INSTALL_DONT_START_SERVER=1 && \
     dpkg -i ./$CB_PACKAGE && rm -f ./$CB_PACKAGE
 
-EXPOSE 8091, 8092, 11210, 11211
+EXPOSE 8091 8092 11210 11211
 
 CMD ["/opt/couchbase/bin/couchbase-server", "--", "-noinput"]
