@@ -7,6 +7,7 @@ ARG CB_RELEASE_URL=https://packages.couchbase.com/releases
 ARG CB_PACKAGE=couchbase-server-enterprise_2.5.2_x86_64.deb
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH=$PATH:/opt/couchbase/bin:/opt/couchbase/bin/tools:/opt/couchbase/bin/install
 
 RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://old-releases.ubuntu.com/ubuntu/|g' /etc/apt/sources.list && \
     sed -i 's|http://security.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ubuntu|g' /etc/apt/sources.list && \
@@ -19,6 +20,8 @@ RUN apt-get install -y librtmp0
 RUN export INSTALL_DONT_START_SERVER=1 && \
     dpkg -i ./$CB_PACKAGE && rm -f ./$CB_PACKAGE
 
+RUN groupadd -g 1000 couchbase && useradd couchbase -u 1000 -g couchbase -M
+
 EXPOSE 8091 8092 11210 11211
 
-CMD ["/opt/couchbase/bin/couchbase-server", "--", "-noinput"]
+CMD ["couchbase-server"]
