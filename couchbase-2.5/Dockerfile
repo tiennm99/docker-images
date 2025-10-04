@@ -19,7 +19,12 @@ RUN apt-get install -y librtmp0
 RUN groupadd -g 1000 couchbase && useradd couchbase -u 1000 -g couchbase -M
 RUN export INSTALL_DONT_START_SERVER=1 && \
     dpkg -i ./$CB_PACKAGE && rm -f ./$CB_PACKAGE
+RUN chown -R couchbase:couchbase /opt/couchbase/var
 
 EXPOSE 8091 8092 11210 11211
+
+VOLUME /opt/couchbase/var
+
+USER couchbase
 
 CMD ["couchbase-server", "--", "-noinput"]
