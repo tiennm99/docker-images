@@ -19,7 +19,7 @@ RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://old-releases.ubuntu.com/u
 #  numactl: numactl
 RUN apt-get update && \
     apt-get install -yq runit wget python-httplib2 chrpath tzdata \
-    lsof lshw sysstat net-tools numactl librtmp0 && \
+    lsof lshw sysstat net-tools numactl librtmp0 dos2unix && \
     apt-get autoremove && apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -42,12 +42,16 @@ RUN export INSTALL_DONT_START_SERVER=1 && \
 
 # Add runit script for couchbase-server
 COPY scripts/run /etc/service/couchbase-server/run
-RUN chown -R couchbase:couchbase /etc/service
+RUN dos2unix /etc/service/couchbase-server/run && \
+    chmod +x /etc/service/couchbase-server/run && \
+    chown -R couchbase:couchbase /etc/service
 
 # Add dummy script for commands invoked by cbcollect_info that
 # make no sense in a Docker container
 COPY scripts/dummy.sh /usr/local/bin/
-RUN ln -s dummy.sh /usr/local/bin/iptables-save && \
+RUN dos2unix /usr/local/bin/dummy.sh && \
+    chmod +x /usr/local/bin/dummy.sh && \
+    ln -s dummy.sh /usr/local/bin/iptables-save && \
     ln -s dummy.sh /usr/local/bin/lvdisplay && \
     ln -s dummy.sh /usr/local/bin/vgdisplay && \
     ln -s dummy.sh /usr/local/bin/pvdisplay
@@ -57,6 +61,8 @@ RUN chrpath -r '$ORIGIN/../lib' /opt/couchbase/bin/curl
 
 # Add bootstrap script
 COPY scripts/entrypoint.sh /
+RUN dos2unix /entrypoint.sh && \
+    chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["couchbase-server"]
 
