@@ -6,4 +6,4 @@ My custom Docker images. Most of them are legacy packages that not be supported 
 
 ### Couchbase-2.5
 - https://docs.couchbase.com/couchbase-manual-2.5/cb-install/
-- https://github.com/couchbase/docker/tree/couchbase-server-4.0.0-community
+- https://github.com/couchbase/docker/tree/a9e69006c4dae3d6b8aa4055436c83e9cd51d9e4/enterprise/couchbase-server/2.5.2
