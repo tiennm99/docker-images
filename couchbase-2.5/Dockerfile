@@ -1,6 +1,9 @@
 FROM ubuntu:12.04
 
-MAINTAINER Couchbase Docker Team <docker@couchbase.com>
+LABEL maintainer="Tien Nguyen Minh <tiennm99@outlook.com>"
+
+RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://old-releases.ubuntu.com/ubuntu/|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ubuntu|g' /etc/apt/sources.list
 
 # Install dependencies:
 #  runit: for container process management
@@ -74,4 +77,3 @@ CMD ["couchbase-server"]
 # 18096: Eventing (SSL) (5.5+)
 EXPOSE 8091 8092 8093 8094 8095 8096 11207 11210 11211 18091 18092 18093 18094 18095 18096
 VOLUME /opt/couchbase/var
-
