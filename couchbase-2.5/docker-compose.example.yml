@@ -1,14 +1,14 @@
 services:
   couchbase:
     image: ghcr.io/tiennm99/docker-images/couchbase-2.5:latest
+    # image: couchbase-2.5:latest
     ports:
       - "8091:8091"
       - "8092:8092"
       - "11210:11210"
       - "11211:11211"
-    restart: unless-stopped
-    stdin_open: true
-    tty: true
+    # stdin_open: true
+    # tty: true
     volumes:
       - couchbase_data:/opt/couchbase/var
 

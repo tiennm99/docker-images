@@ -1,10 +1,11 @@
 #!/bin/bash
-set -e
+set -ex
 
 staticConfigFile=/opt/couchbase/etc/couchbase/static_config
 restPortValue=8091
 
 # see https://developer.couchbase.com/documentation/server/current/install/install-ports.html
+# https://docs.couchbase.com/couchbase-manual-2.5/cb-install/#network-ports
 function overridePort() {
     portName=$1
     portNameUpper=$(echo $portName | awk '{print toupper($0)}')
@@ -39,6 +40,7 @@ overridePort "ssl_proxy_downstream_port"
 overridePort "ssl_proxy_upstream_port"
 
 
+# if [ "$1" == "couchbase-server" ] && [ ! -d "/etc/service" ]; then
 [[ "$1" == "couchbase-server" ]] && {
 
     if [ "$(whoami)" = "couchbase" ]; then
@@ -53,7 +55,8 @@ overridePort "ssl_proxy_upstream_port"
     fi
     echo "Starting Couchbase Server -- Web UI available at http://<ip>:$restPortValue"
     echo "and logs available in /opt/couchbase/var/lib/couchbase/logs"
-    exec /usr/sbin/runsvdir-start
+    exec /usr/sbin/runsvdir -P /etc/service
 }
+# fi
 
 exec "$@"
