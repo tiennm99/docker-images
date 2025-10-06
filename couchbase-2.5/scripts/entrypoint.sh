@@ -55,7 +55,7 @@ overridePort "ssl_proxy_upstream_port"
     fi
     echo "Starting Couchbase Server -- Web UI available at http://<ip>:$restPortValue"
     echo "and logs available in /opt/couchbase/var/lib/couchbase/logs"
-    exec /usr/sbin/runsvdir -P /etc/service
+    exec /usr/bin/runsvdir -P /etc/service
 }
 # fi
 
