@@ -1,37 +1,46 @@
-FROM ubuntu:18.04
+FROM centos:7 AS builder
 
-# Set environment variables
-ENV JAVA_HOME /opt/jdk1.8.0_201
-ENV PATH $JAVA_HOME/bin:$PATH
-ENV JAVA_VERSION 8u201
-ENV JAVA_URL https://repo.huaweicloud.com/java/jdk/8u201-b09/jdk-8u201-linux-x64.tar.gz
+LABEL maintainer="miti99 <tiennm99@outlook.com>"
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y wget curl && \
-    rm -rf /var/lib/apt/lists/*
+RUN yum install -y tar gzip curl
 
-# Download and install Oracle JDK 8 u201 from Huawei Cloud repository
-RUN mkdir -p /tmp/jdk && \
-    cd /tmp/jdk && \
-    wget -O jdk-8u201-linux-x64.tar.gz $JAVA_URL && \
-    mkdir -p /opt && \
-    cd /opt && \
-    tar -xzf /tmp/jdk/jdk-8u201-linux-x64.tar.gz && \
-    rm -rf /tmp/jdk
+ENV LANG=en_US.UTF-8
 
-# Set up alternatives for java commands
-RUN update-alternatives --install /usr/bin/java java $JAVA_HOME/bin/java 100 && \
-    update-alternatives --install /usr/bin/javac javac $JAVA_HOME/bin/javac 100
+ENV JAVA_URL=https://repo.huaweicloud.com/java/jdk/8u201-b09/ \
+    JAVA_HOME=/usr/java/jdk-8
 
-# Verify installation
-RUN java -version && javac -version
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN set -eux; \
+    ARCH="$(uname -m)" && \
+    if [ "$ARCH" = "x86_64" ]; \
+    then \
+    JAVA_PKG="$JAVA_URL"jdk-8u201-linux-x64.tar.gz; \
+    else \
+    JAVA_PKG="$JAVA_URL"jdk-8u201-linux-i586.tar.gz; \
+    fi && \
+    JAVA_SHA256="$(curl -L "$JAVA_PKG".sha256)" ;  \
+    curl -L --output /tmp/jdk.tar.gz "$JAVA_PKG" && \
+    echo "$JAVA_SHA256" */tmp/jdk.tar.gz | sha256sum -c -; \
+    mkdir -p "$JAVA_HOME"; \
+    tar --extract --file /tmp/jdk.tar.gz --directory "$JAVA_HOME" --strip-components 1
 
-# Clean up
-RUN apt-get clean
+FROM centos:7
 
-# Set working directory
-WORKDIR /app
+RUN yum install -y gzip
 
-# Default command
-CMD ["bash"]
+ENV LANG=en_US.UTF-8
+ENV JAVA_HOME=/usr/java/jdk-8
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+COPY --from=builder $JAVA_HOME $JAVA_HOME
+
+RUN yum -y update; \
+    rm -rf /var/cache/yum; \
+    ln -sfT "$JAVA_HOME" /usr/java/default; \
+    ln -sfT "$JAVA_HOME" /usr/java/latest; \
+    for bin in "$JAVA_HOME/bin/"*; do \
+    base="$(basename "$bin")"; \
+    [ ! -e "/usr/bin/$base" ]; \
+    alternatives --install "/usr/bin/$base" "$base" "$bin" 20000; \
+    done; \
+    java -Xshare:dump;
