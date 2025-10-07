@@ -40,8 +40,8 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: |
-            ${{ secrets.DOCKER_USERNAME }}/couchbase-2
-            ghcr.io/${{ github.actor }}/couchbase-2
+            ghcr.io/${{ github.actor }}/couchbase-2.5
+            ${{ secrets.DOCKER_USERNAME }}/couchbase-2.5
           tags: |
             type=raw,value=latest
             type=raw,value=2.5.2
@@ -55,12 +55,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Wait for GHCR to process image
-        run: sleep 15
-
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: ghcr.io/${{ github.actor }}/couchbase-2
+          subject-name: ghcr.io/${{ github.actor }}/couchbase-2.5
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
