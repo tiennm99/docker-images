@@ -40,8 +40,8 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: |
-            ${{ secrets.DOCKER_USERNAME }}/couchbase-2.5
-            ghcr.io/${{ github.actor }}/couchbase-2.5
+            ${{ secrets.DOCKER_USERNAME }}/couchbase-2
+            ghcr.io/${{ github.actor }}/couchbase-2
           tags: |
             type=raw,value=latest
             type=raw,value=2.5.2
@@ -50,7 +50,7 @@ jobs:
         id: push
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
-          context: couchbase-2.5
+          context: couchbase-2
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -61,6 +61,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: ghcr.io/${{ github.actor }}/couchbase-2.5
+          subject-name: ghcr.io/${{ github.actor }}/couchbase-2
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
