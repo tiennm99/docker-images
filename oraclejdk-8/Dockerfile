@@ -1,16 +1,11 @@
-FROM centos:7 AS builder
+FROM centos:7
 
 LABEL maintainer="miti99 <tiennm99@outlook.com>"
 
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo && \
-    yum install -y deltarpm && \
-    yum install -y tar gzip curl which
-
 ENV LANG=en_US.UTF-8
-
-ENV JAVA_URL=https://repo.huaweicloud.com/java/jdk/8u201-b09/ \
-    JAVA_HOME=/usr/java/jdk-8
+ENV JAVA_HOME=/usr/java/jdk-8
+ENV PATH=$JAVA_HOME/bin:$PATH
+ENV JAVA_URL=https://repo.huaweicloud.com/java/jdk/8u201-b09/
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN set -eux; \
@@ -25,23 +20,8 @@ RUN set -eux; \
     curl -L --output /tmp/jdk.tar.gz "$JAVA_PKG" && \
     echo "$JAVA_SHA256" */tmp/jdk.tar.gz | sha256sum -c -; \
     mkdir -p "$JAVA_HOME"; \
-    tar --extract --file /tmp/jdk.tar.gz --directory "$JAVA_HOME" --strip-components 1
-
-FROM centos:7
-
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo && \
-    yum install -y deltarpm && \
-    yum install -y gzip which
-
-ENV LANG=en_US.UTF-8
-ENV JAVA_HOME=/usr/java/jdk-8
-ENV PATH=$JAVA_HOME/bin:$PATH
-
-COPY --from=builder $JAVA_HOME $JAVA_HOME
-
-RUN yum -y update; \
-    rm -rf /var/cache/yum; \
+    tar --extract --file /tmp/jdk.tar.gz --directory "$JAVA_HOME" --strip-components 1 && \
+    rm -f /tmp/jdk.tar.gz; \
     ln -sfT "$JAVA_HOME" /usr/java/default; \
     ln -sfT "$JAVA_HOME" /usr/java/latest; \
     for bin in "$JAVA_HOME/bin/"*; do \
