@@ -7,10 +7,10 @@ My custom Docker images. Most of them are legacy packages that not be supported 
 ### Download
 
 ```
-docker pull ghcr.io/tiennm99/docker-images/couchbase-2.5:latest
+docker pull ghcr.io/tiennm99/couchbase-2.5:2.5.2
 ```
 
-More options: https://github.com/tiennm99/docker-images/pkgs/container/docker-images%2Fcouchbase-2.5
+More options: https://github.com/tiennm99/docker-images/pkgs/container/couchbase-2.5
 
 ### Docker compose example
 
@@ -19,6 +19,7 @@ More options: https://github.com/tiennm99/docker-images/pkgs/container/docker-im
 ### Credits
 
 - https://docs.couchbase.com/couchbase-manual-2.5/cb-install/
+- https://github.com/couchbase/docker/tree/14f9e5f37723ef15affa8cf3227b15409805f668/enterprise/couchbase-server/2.5.2
 - https://github.com/couchbase/docker/tree/a9e69006c4dae3d6b8aa4055436c83e9cd51d9e4/enterprise/couchbase-server/2.5.2
 
 ## Gradle 8
