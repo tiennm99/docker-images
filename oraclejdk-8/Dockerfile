@@ -2,7 +2,10 @@ FROM centos:7 AS builder
 
 LABEL maintainer="miti99 <tiennm99@outlook.com>"
 
-RUN yum install -y tar gzip curl
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo && \
+    yum install -y deltarpm && \
+    yum install -y tar gzip curl which
 
 ENV LANG=en_US.UTF-8
 
@@ -26,7 +29,10 @@ RUN set -eux; \
 
 FROM centos:7
 
-RUN yum install -y gzip
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo && \
+    yum install -y deltarpm && \
+    yum install -y gzip which
 
 ENV LANG=en_US.UTF-8
 ENV JAVA_HOME=/usr/java/jdk-8
