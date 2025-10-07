@@ -1,33 +1,88 @@
-FROM ghcr.io/tiennm99/docker-images/oraclejdk-8:8u201
+FROM ghcr.io/tiennm99/oraclejdk-8:8u201
 
-# Set environment variables
-ENV GRADLE_HOME /opt/gradle
-ENV PATH $GRADLE_HOME/bin:$PATH
-ENV GRADLE_VERSION 8.14.3
+CMD ["gradle"]
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y wget unzip && \
-    rm -rf /var/lib/apt/lists/*
+ENV GRADLE_HOME=/opt/gradle
 
-# Download and install Gradle
-RUN wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" && \
-    mkdir -p /opt && \
-    unzip -d /opt gradle.zip && \
-    mv /opt/gradle-${GRADLE_VERSION} /opt/gradle && \
-    rm gradle.zip
+RUN set -o errexit -o nounset \
+    && sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*.repo \
+    && sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*.repo \
+    && yum install -y deltarpm \
+    && yum install -y epel-release \
+    && yum install -y \
+        # common utilities
+        make \
+        tar \
+        \
+        # Dockerfile dependencies
+        unzip \
+        wget \
+        which \
+        \
+        # Gradle dependencies
+        findutils \
+        \
+        # VCS dependencies
+        git \
+        git-lfs \
+        mercurial \
+        subversion \
+    && yum clean all \
+    && rm -rf /var/cache/yum \
+    \
+    && echo "Testing common utilities" \
+    && which awk \
+    && which curl \
+    && which cut \
+    && which grep \
+    && which gunzip \
+    && which sha256sum \
+    && which sed \
+    && which tar \
+    && which tr \
+    && which unzip \
+    && which wget \
+    \
+    && echo "Testing VCSes" \
+    && which git \
+    && which git-lfs \
+    && which hg \
+    && which svn
 
-# Create a non-root user
-RUN groupadd -r gradle && useradd -r -g gradle gradle
+RUN set -o errexit -o nounset \
+    && echo "Adding gradle user and group" \
+    && groupadd --system --gid 1000 gradle \
+    && useradd --system --gid gradle --uid 1000 --shell /bin/bash --create-home gradle \
+    && mkdir /home/gradle/.gradle \
+    && chown --recursive gradle:gradle /home/gradle \
+    && chmod --recursive o+rwx /home/gradle \
+    \
+    && echo "Symlinking root Gradle cache to gradle Gradle cache" \
+    && ln --symbolic /home/gradle/.gradle /root/.gradle
 
-# Set ownership
-RUN chown -R gradle:gradle /opt/gradle
+VOLUME /home/gradle/.gradle
 
-# Switch to the gradle user
-USER gradle
-
-# Set working directory
 WORKDIR /home/gradle
 
-# Default command
-CMD ["gradle", "--version"]
+ENV GRADLE_VERSION=8.13
+ARG GRADLE_DOWNLOAD_SHA256=20f1b1176237254a6fc204d8434196fa11a4cfb387567519c61556e8710aed78
+RUN set -o errexit -o nounset \
+    && echo "Downloading Gradle" \
+    && wget --no-verbose --output-document=gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
+    \
+    && echo "Checking Gradle download hash" \
+    && echo "${GRADLE_DOWNLOAD_SHA256} *gradle.zip" | sha256sum --check - \
+    \
+    && echo "Installing Gradle" \
+    && unzip gradle.zip \
+    && rm gradle.zip \
+    && mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
+    && ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle
+
+USER gradle
+
+RUN set -o errexit -o nounset \
+    && echo "Testing Gradle installation" \
+    && gradle --version
+
+USER root

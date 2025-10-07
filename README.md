@@ -25,8 +25,8 @@ More options: https://github.com/tiennm99/docker-images/pkgs/container/docker-im
 
 ### Credits
 
-- https://gradle.org/releases/#8.14.3
-<!-- - https://github.com/gradle/docker-gradle/blob/8/jdk8-jammy/Dockerfile -->
+- https://gradle.org/releases/#8.13
+- https://github.com/gradle/docker-gradle/blob/8/jdk8-corretto/Dockerfile
 
 ## Oracle JDK 8
 
