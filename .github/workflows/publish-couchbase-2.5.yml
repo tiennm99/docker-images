@@ -6,6 +6,7 @@ on:
       - 'main'
     paths:
       - 'couchbase-2.5/**'
+      - '.github/workflows/publish-couchbase-2.5.yml'
   workflow_dispatch:
 
 jobs:
@@ -41,6 +42,9 @@ jobs:
           images: |
             ${{ secrets.DOCKER_USERNAME }}/couchbase-2.5
             ghcr.io/${{ github.actor }}/couchbase-2.5
+          tags: |
+            type=raw,value=latest
+            type=raw,value=2.5.2
 
       - name: Build and push Docker images
         id: push

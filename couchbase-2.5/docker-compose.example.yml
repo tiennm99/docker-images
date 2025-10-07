@@ -1,16 +1,13 @@
 services:
   couchbase:
-    # image: ghcr.io/tiennm99/docker-images/couchbase-2.5:latest
-    image: couchbase-2.5:latest
+    image: ghcr.io/tiennm99/couchbase-2.5:2.5.2
     ports:
       - "8091:8091"
       - "8092:8092"
       - "11210:11210"
       - "11211:11211"
-    # stdin_open: true
-    # tty: true
-#     volumes:
-#       - couchbase_data:/opt/couchbase/var
+    volumes:
+      - couchbase_data:/opt/couchbase/var
 
-# volumes:
-#   couchbase_data:
+volumes:
+  couchbase_data:
