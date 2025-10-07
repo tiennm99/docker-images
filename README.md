@@ -33,9 +33,8 @@ More options: https://github.com/tiennm99/docker-images/pkgs/container/docker-im
 ### Credits
 
 - https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html
-<!-- - https://github.com/oracle/docker-images/blob/main/OracleJava/8/jdk/Dockerfile.ol8 -->
+- https://github.com/oracle/docker-images/blob/main/OracleJava/8/jdk/Dockerfile.ol8
 - https://repo.huaweicloud.com/java/jdk/8u201-b09/
-
 
 ## GitHub Actions template
 
