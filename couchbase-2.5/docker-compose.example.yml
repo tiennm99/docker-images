@@ -8,6 +8,9 @@ services:
       - "11211:11211"
     volumes:
       - couchbase_data:/opt/couchbase/var
+    # May be required when using dedicated ports (Moxi)
+    # stdin_open: true
+    # tty: true
 
 volumes:
   couchbase_data:
