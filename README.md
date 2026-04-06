@@ -37,6 +37,32 @@ More options: https://github.com/tiennm99/docker-images/pkgs/container/couchbase
 - https://github.com/oracle/docker-images/blob/main/OracleJava/8/jdk/Dockerfile.ol8
 - https://repo.huaweicloud.com/java/jdk/8u201-b09/
 
+## Scribe
+
+Facebook's legacy real-time log aggregation daemon.
+
+### Docker compose example
+
+```yaml
+services:
+  scribe:
+    image: ghcr.io/tiennm99/scribe:2.2
+    ports:
+      - "1463:1463"
+    volumes:
+      - scribe_logs:/var/log/scribe
+      - ./scribe/config/scribe.conf:/etc/scribe/scribe.conf:ro
+    restart: unless-stopped
+
+volumes:
+  scribe_logs:
+```
+
+### Credits
+
+- https://github.com/facebookarchive/scribe
+- https://archive.apache.org/dist/thrift/0.9.1/
+
 ## GitHub Actions template
 
 ### Credits
