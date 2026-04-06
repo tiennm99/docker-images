@@ -139,7 +139,7 @@ docker build -t scribe:2.2 .
 ```
 
 The Dockerfile uses a two-stage build:
-1. **builder** – compiles Apache Thrift 0.9.1 and Scribe from source on Ubuntu 14.04
+1. **builder** – compiles Apache Thrift 0.9.1 and Scribe from source on CentOS 7
 2. **runtime** – copies only the compiled binary and required shared libraries
 
 ---
