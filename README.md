@@ -43,6 +43,11 @@ Facebook's legacy real-time log aggregation daemon.
 
 See [scribe/README.md](scribe/README.md) for usage, configuration, and examples.
 
+### Credits
+
+- https://github.com/facebookarchive/scribe
+- https://archive.apache.org/dist/thrift/0.9.1/
+
 ## GitHub Actions template
 
 ### Credits
