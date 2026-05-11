@@ -1,20 +1,25 @@
 # Docker Images
 
-My custom Docker images. Most of them are legacy packages that not be supported anymore, so don't have a official Docker image.
+Custom Docker images of legacy/discontinued software — built and published to GHCR.
+
+## Image index
+
+| Image | Tag | GHCR package | Notes |
+|-------|-----|-------------|-------|
+| Couchbase 2.5 | `2.5.2` | [couchbase-2.5](https://github.com/tiennm99/docker-images/pkgs/container/couchbase-2.5) | Legacy NoSQL; no official image exists |
+| Gradle 8 | latest | — | JDK 8 + Corretto base |
+| Oracle JDK 8 | `8u201` | — | Archived Oracle JDK build |
+| Scribe | — | — | Facebook's legacy log aggregation daemon |
 
 ## Couchbase-2.5
 
-### Download
-
-```
+```bash
 docker pull ghcr.io/tiennm99/couchbase-2.5:2.5.2
 ```
 
 More options: https://github.com/tiennm99/docker-images/pkgs/container/couchbase-2.5
 
-### Docker compose example
-
-- [docker-compose.example.yml](couchbase-2.5/docker-compose.example.yml)
+Docker Compose example: [couchbase-2.5/docker-compose.example.yml](couchbase-2.5/docker-compose.example.yml)
 
 ### Credits
 
