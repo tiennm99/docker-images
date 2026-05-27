@@ -1,0 +1,26 @@
+# Runnable Scribe example: the daemon plus a one-shot Go sender.
+# Run from this directory:  docker compose up --build
+# Written logs appear on the host under ./logs/<category>/.
+services:
+  scribe:
+    image: ghcr.io/tiennm99/scribe:2.2
+    ports:
+      - "1463:1463"
+    volumes:
+      # Reuse the repo's default config (read-only).
+      - ../config/scribe.conf:/etc/scribe/scribe.conf:ro
+      # Host-visible log output — files land here after the sender runs.
+      - ./logs:/var/log/scribe
+    restart: unless-stopped
+
+  sender:
+    build: ./sender
+    depends_on:
+      - scribe
+    # Reaches scribe over the compose network by service name (internal port),
+    # independent of the host 1463 mapping. The sender retries until scribe is up.
+    environment:
+      - SCRIBE_HOST=scribe
+      - SCRIBE_PORT=1463
+      - SCRIBE_CATEGORY=example
+      - SCRIBE_COUNT=5

@@ -23,6 +23,21 @@ Scribe will listen on port **1463** (Thrift binary protocol) and write incoming 
 
 ---
 
+## Runnable Example
+
+Want to see logs actually written end-to-end? The [`example/`](example/) directory has a
+`docker compose` setup that boots Scribe plus a small Go sender:
+
+```bash
+cd scribe/example
+docker compose up --build
+```
+
+The sender pushes a few messages and exits; written log files appear on your host under
+`example/logs/`. See [`example/README.md`](example/README.md) for details.
+
+---
+
 ## Custom Configuration
 
 Mount your own `scribe.conf` over the default one:
