@@ -29,7 +29,7 @@ Want to see logs actually written end-to-end? The [`example/`](example/) directo
 `docker compose` setup that boots Scribe plus a small Go sender:
 
 ```bash
-cd scribe/example
+cd scribe-2.2/example
 docker compose up --build
 ```
 

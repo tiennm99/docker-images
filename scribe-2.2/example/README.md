@@ -15,7 +15,7 @@ Thrift, pushes a few messages, and exits. The resulting log files appear on your
 ## Run
 
 ```bash
-cd scribe/example
+cd scribe-2.2/example
 docker compose up --build
 ```
 

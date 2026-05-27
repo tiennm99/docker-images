@@ -9,7 +9,7 @@ Custom Docker images of legacy/discontinued software — built and published to 
 | Couchbase 2.5 | `2.5.2` | [couchbase-2.5](https://github.com/tiennm99/docker-images/pkgs/container/couchbase-2.5) | Legacy NoSQL; no official image exists |
 | Gradle 8 | latest | — | JDK 8 + Corretto base |
 | Oracle JDK 8 | `8u201` | — | Archived Oracle JDK build |
-| Scribe | — | — | Facebook's legacy log aggregation daemon |
+| Scribe 2.2 | `2.2` | [scribe](https://github.com/tiennm99/docker-images/pkgs/container/scribe) | Facebook's legacy log aggregation daemon |
 
 ## Couchbase-2.5
 
@@ -42,11 +42,11 @@ Docker Compose example: [couchbase-2.5/docker-compose.example.yml](couchbase-2.5
 - https://github.com/oracle/docker-images/blob/main/OracleJava/8/jdk/Dockerfile.ol8
 - https://repo.huaweicloud.com/java/jdk/8u201-b09/
 
-## Scribe
+## Scribe 2.2
 
 Facebook's legacy real-time log aggregation daemon.
 
-See [scribe/README.md](scribe/README.md) for usage, configuration, and examples.
+See [scribe-2.2/README.md](scribe-2.2/README.md) for usage, configuration, and examples.
 
 ### Credits
 
