@@ -40,11 +40,18 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: |
-            ghcr.io/${{ github.actor }}/couchbase-2.5
-            ${{ secrets.DOCKER_USERNAME }}/couchbase-2.5
+            ghcr.io/${{ github.actor }}/couchbase
+            ${{ secrets.DOCKER_USERNAME }}/couchbase
           tags: |
             type=raw,value=latest
+            type=raw,value=2.5
             type=raw,value=2.5.2
+          labels: |
+            org.opencontainers.image.title=Couchbase Server 2.5
+            org.opencontainers.image.description=Legacy Couchbase Server (no official upstream image)
+            org.opencontainers.image.version=2.5.2
+            org.opencontainers.image.source=https://github.com/couchbase/docker
+            org.opencontainers.image.licenses=Apache-2.0
 
       - name: Build and push Docker images
         id: push
@@ -58,6 +65,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: ghcr.io/${{ github.actor }}/couchbase-2.5
+          subject-name: ghcr.io/${{ github.actor }}/couchbase
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true

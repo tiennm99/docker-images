@@ -1,6 +1,6 @@
 services:
   couchbase:
-    image: ghcr.io/tiennm99/couchbase-2.5:2.5.2
+    image: ghcr.io/tiennm99/couchbase:2.5.2
     ports:
       - "8091:8091"
       - "8092:8092"
