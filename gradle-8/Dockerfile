@@ -1,4 +1,11 @@
-FROM ghcr.io/tiennm99/oraclejdk-8:8u201
+FROM ghcr.io/tiennm99/oraclejdk:8u201
+
+LABEL maintainer="miti99 <tiennm99@outlook.com>"
+LABEL org.opencontainers.image.title="Gradle 8"
+LABEL org.opencontainers.image.description="Gradle 8.13 on Oracle JDK 8 base"
+LABEL org.opencontainers.image.version="8.13"
+LABEL org.opencontainers.image.source="https://github.com/gradle/docker-gradle"
+LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 CMD ["gradle"]
 
