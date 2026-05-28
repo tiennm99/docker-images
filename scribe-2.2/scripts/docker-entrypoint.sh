@@ -1,5 +1,5 @@
 #!/bin/bash
-# docker-entrypoint.sh – Scribe daemon startup script
+# docker-entrypoint.sh - Scribe daemon startup script
 #
 # Reads SCRIBE_CONFIG env var (default: /etc/scribe/scribe.conf)
 # and launches scribed with that configuration file.

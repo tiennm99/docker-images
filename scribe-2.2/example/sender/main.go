@@ -2,7 +2,7 @@
 // daemon to demonstrate that the example writes real log files.
 //
 // It speaks Scribe's Thrift RPC by hand-encoding the framed binary `Log()` call
-// using only the Go standard library — no Apache Thrift dependency and no
+// using only the Go standard library - no Apache Thrift dependency and no
 // generated bindings. The Scribe Thrift contract:
 //
 //	enum ResultCode { OK = 0, TRY_LATER = 1 }
@@ -122,7 +122,7 @@ func readResultCode(r io.Reader) (int32, error) {
 	}
 	br := bytes.NewReader(frame)
 
-	// messageBegin — detect strict vs non-strict from the first i32.
+	// messageBegin: detect strict vs non-strict from the first i32.
 	var i32buf [4]byte
 	if _, err := io.ReadFull(br, i32buf[:]); err != nil {
 		return -1, fmt.Errorf("read message header: %w", err)
@@ -158,7 +158,7 @@ func readResultCode(r io.Reader) (int32, error) {
 		return -1, err
 	}
 	if typeID == tSTOP {
-		return 0, nil // no return field present → treat as OK
+		return 0, nil // no return field present; treat as OK
 	}
 	var idBuf [2]byte
 	if _, err := io.ReadFull(br, idBuf[:]); err != nil {
@@ -208,7 +208,7 @@ func main() {
 
 	messages := make([]string, 0, count)
 	for i := 1; i <= count; i++ {
-		messages = append(messages, fmt.Sprintf("Hello from Go sender — message %d/%d", i, count))
+		messages = append(messages, fmt.Sprintf("Hello from Go sender - message %d/%d", i, count))
 	}
 
 	if _, err := conn.Write(buildLogFrame(category, messages)); err != nil {

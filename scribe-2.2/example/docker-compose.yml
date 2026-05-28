@@ -9,7 +9,7 @@ services:
     volumes:
       # Reuse the repo's default config (read-only).
       - ../config/scribe.conf:/etc/scribe/scribe.conf:ro
-      # Host-visible log output — files land here after the sender runs.
+      # Host-visible log output: files land here after the sender runs.
       - ./logs:/var/log/scribe
     restart: unless-stopped
 
