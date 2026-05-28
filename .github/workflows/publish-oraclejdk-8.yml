@@ -40,11 +40,18 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: |
-            ${{ secrets.DOCKER_USERNAME }}/oraclejdk-8
-            ghcr.io/${{ github.actor }}/oraclejdk-8
+            ${{ secrets.DOCKER_USERNAME }}/oraclejdk
+            ghcr.io/${{ github.actor }}/oraclejdk
           tags: |
             type=raw,value=latest
+            type=raw,value=8
             type=raw,value=8u201
+          labels: |
+            org.opencontainers.image.title=Oracle JDK 8
+            org.opencontainers.image.description=Legacy Oracle JDK 8u201 (archived Oracle build, no upstream OCI image)
+            org.opencontainers.image.version=8u201
+            org.opencontainers.image.source=https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html
+            org.opencontainers.image.licenses=LicenseRef-Oracle-BCL
 
       - name: Build and push Docker images
         id: push
@@ -58,6 +65,6 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: ghcr.io/${{ github.actor }}/oraclejdk-8
+          subject-name: ghcr.io/${{ github.actor }}/oraclejdk
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true

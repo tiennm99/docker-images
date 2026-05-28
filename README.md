@@ -8,7 +8,7 @@ Custom Docker images of legacy/discontinued software — built and published to 
 |-------|-----|-------------|-------|
 | Couchbase 2.5 | `2.5.2` | [couchbase](https://github.com/tiennm99/docker-images/pkgs/container/couchbase) | Legacy NoSQL; no official image exists |
 | Gradle 8 | latest | — | JDK 8 + Corretto base |
-| Oracle JDK 8 | `8u201` | — | Archived Oracle JDK build |
+| Oracle JDK 8 | `8u201` | [oraclejdk](https://github.com/tiennm99/docker-images/pkgs/container/oraclejdk) | Archived Oracle JDK build |
 | Scribe 2.2 | `2.2` | [scribe](https://github.com/tiennm99/docker-images/pkgs/container/scribe) | Facebook's legacy log aggregation daemon |
 
 ## Naming convention

@@ -1,6 +1,11 @@
 FROM centos:7
 
 LABEL maintainer="miti99 <tiennm99@outlook.com>"
+LABEL org.opencontainers.image.title="Oracle JDK 8"
+LABEL org.opencontainers.image.description="Legacy Oracle JDK 8u201 (archived Oracle build, no upstream OCI image)"
+LABEL org.opencontainers.image.version="8u201"
+LABEL org.opencontainers.image.source="https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html"
+LABEL org.opencontainers.image.licenses="LicenseRef-Oracle-BCL"
 
 ENV LANG=en_US.UTF-8
 ENV JAVA_HOME=/usr/java/jdk-8
