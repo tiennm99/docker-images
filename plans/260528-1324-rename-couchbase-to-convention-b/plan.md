@@ -1,7 +1,7 @@
 ---
 title: "Apply Convention B naming: rename couchbase image and codify rule"
 description: "Migrate this repo to Docker-Hub-style image naming (<service>:<version>). Rename ghcr.io/tiennm99/couchbase-2.5 -> couchbase. Port OCI labels to couchbase. Codify the rule in README. Close out prior naming-decision plans."
-status: in_progress
+status: completed
 priority: P2
 branch: "main"
 tags: [docker, naming, convention, couchbase, oci]
@@ -24,9 +24,9 @@ This plan implements Convention B: rename `ghcr.io/tiennm99/couchbase-2.5` to `c
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | [Codify naming rule and supersede prior plans](./phase-01-codify-naming-rule-and-supersede-prior-plans.md) | Code applied (uncommitted) |
-| 2 | [Rename couchbase image to <service>:<version>](./phase-02-rename-couchbase-image-to-service-version.md) | Code applied (uncommitted) |
-| 3 | [Port OCI labels to couchbase image](./phase-03-port-oci-labels-to-couchbase-image.md) | Code applied (uncommitted) |
+| 1 | [Codify naming rule and supersede prior plans](./phase-01-codify-naming-rule-and-supersede-prior-plans.md) | Completed (`2f7bfde`) |
+| 2 | [Rename couchbase image to <service>:<version>](./phase-02-rename-couchbase-image-to-service-version.md) | Completed (`3a0e31b`) |
+| 3 | [Port OCI labels to couchbase image](./phase-03-port-oci-labels-to-couchbase-image.md) | Completed (`afa2930`) |
 
 ## Dependencies
 

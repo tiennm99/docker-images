@@ -1,9 +1,10 @@
 ---
 phase: 3
 title: "Port OCI labels to couchbase image"
-status: code-applied
+status: completed
 priority: P2
 effort: "10m"
+commit: "afa2930"
 dependencies: [2]
 ---
 

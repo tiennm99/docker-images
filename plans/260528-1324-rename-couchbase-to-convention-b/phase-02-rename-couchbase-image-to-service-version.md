@@ -1,9 +1,10 @@
 ---
 phase: 2
 title: "Rename couchbase image to <service>:<version>"
-status: code-applied
+status: completed
 priority: P1
 effort: "10m"
+commit: "3a0e31b"
 dependencies: [1]
 ---
 

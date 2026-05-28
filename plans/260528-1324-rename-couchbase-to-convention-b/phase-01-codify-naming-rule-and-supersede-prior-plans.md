@@ -1,9 +1,10 @@
 ---
 phase: 1
 title: "Codify naming rule and supersede prior plans"
-status: code-applied
+status: completed
 priority: P2
 effort: "15m"
+commit: "2f7bfde"
 dependencies: []
 ---
 
