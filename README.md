@@ -6,16 +6,30 @@ Custom Docker images of legacy/discontinued software — built and published to 
 
 | Image | Tag | GHCR package | Notes |
 |-------|-----|-------------|-------|
-| Couchbase 2.5 | `2.5.2` | [couchbase-2.5](https://github.com/tiennm99/docker-images/pkgs/container/couchbase-2.5) | Legacy NoSQL; no official image exists |
+| Couchbase 2.5 | `2.5.2` | [couchbase](https://github.com/tiennm99/docker-images/pkgs/container/couchbase) | Legacy NoSQL; no official image exists |
 | Scribe 2.2 | `2.2` | [scribe](https://github.com/tiennm99/docker-images/pkgs/container/scribe) | Facebook's legacy log aggregation daemon |
+
+## Naming convention
+
+This repo uses Docker-Hub-style image names: `<service>:<full-version>`.
+
+- Subdirectory: `<service>-<major-line>/` (e.g. `couchbase-2.5/`, `scribe-2.2/`). Subdir holds the build context for one major version line.
+- GHCR + Docker Hub image: `<service>` (e.g. `couchbase`, `scribe`). No major-line suffix in the image name.
+- Workflow file: `publish-<service>-<major-line>.yml` (matches subdir for path-trigger clarity).
+- Tags published per workflow:
+  - `<full-version>` (e.g. `2.5.2`, `2.2`)
+  - `<major-line>` (e.g. `2.5`) - optional alias
+  - `latest` - canonical build of the only major line this repo carries for the service.
+
+If a second major line of the same service is ever added to this repo, drop `latest` from both workflows and publish `<major-line>-latest` tags instead.
 
 ## Couchbase-2.5
 
 ```bash
-docker pull ghcr.io/tiennm99/couchbase-2.5:2.5.2
+docker pull ghcr.io/tiennm99/couchbase:2.5.2
 ```
 
-More options: https://github.com/tiennm99/docker-images/pkgs/container/couchbase-2.5
+More options: https://github.com/tiennm99/docker-images/pkgs/container/couchbase
 
 Docker Compose example: [couchbase-2.5/docker-compose.example.yml](couchbase-2.5/docker-compose.example.yml)
 
