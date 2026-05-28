@@ -68,6 +68,11 @@ RUN set -eux; \
 FROM centos:7
 
 LABEL maintainer="Tien Nguyen Minh <tiennm99@outlook.com>"
+LABEL org.opencontainers.image.title="Facebook Legacy Scribe"
+LABEL org.opencontainers.image.description="Facebook Legacy Scribe - real-time log aggregation daemon"
+LABEL org.opencontainers.image.version="2.2"
+LABEL org.opencontainers.image.source="https://github.com/facebookarchive/scribe"
+LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 # CentOS 7 is EOL, so yum must use the vault repositories.
 RUN sed -i 's|^mirrorlist=|#mirrorlist=|g; s|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' \

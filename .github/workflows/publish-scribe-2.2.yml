@@ -45,6 +45,12 @@ jobs:
           tags: |
             type=raw,value=latest
             type=raw,value=2.2
+          labels: |
+            org.opencontainers.image.title=Facebook Legacy Scribe
+            org.opencontainers.image.description=Facebook Legacy Scribe - real-time log aggregation daemon
+            org.opencontainers.image.version=2.2
+            org.opencontainers.image.source=https://github.com/facebookarchive/scribe
+            org.opencontainers.image.licenses=Apache-2.0
 
       - name: Build and push Docker images
         id: push
