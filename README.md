@@ -58,6 +58,17 @@ which other repos can use as
 Docker Hub personal access token with read and write scope (the
 `DOCKER_PASSWORD` secret here).
 
+## Legacy Docker Hub repositories
+
+These Docker Hub repositories hold the images under their old names. They get
+no updates; each one's description and overview point to its replacement.
+
+| Legacy | Replacement |
+| --- | --- |
+| [`miti99/couchbase-2.5`](https://hub.docker.com/r/miti99/couchbase-2.5) | [`miti99/couchbase`](https://hub.docker.com/r/miti99/couchbase) |
+| [`miti99/gradle-8`](https://hub.docker.com/r/miti99/gradle-8) | [`miti99/gradle`](https://hub.docker.com/r/miti99/gradle) |
+| [`miti99/oraclejdk-8`](https://hub.docker.com/r/miti99/oraclejdk-8) | [`miti99/oraclejdk`](https://hub.docker.com/r/miti99/oraclejdk) |
+
 ## Couchbase-2.5
 
 ```bash
