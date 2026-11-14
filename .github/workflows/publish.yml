@@ -110,6 +110,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # A buildx builder pushes one manifest to both registries, so the
+      # digest the attestation names exists on GHCR too.
+      - name: Set up Docker Buildx
+        if: ${{ !inputs.metadata-only }}
+        uses: docker/setup-buildx-action@v4
+
       - name: Build and push
         id: push
         if: ${{ !inputs.metadata-only }}
