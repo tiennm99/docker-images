@@ -1,0 +1,47 @@
+name: Docker Hub metadata
+description: >-
+  Set a Docker Hub repository's short description, overview (full description)
+  and categories. Works with a Docker Hub personal access token.
+inputs:
+  repository:
+    description: Docker Hub repository, `<namespace>/<name>`
+    required: true
+  username:
+    description: Docker Hub username
+    required: true
+  token:
+    description: Docker Hub personal access token with read and write scope
+    required: true
+  description:
+    description: Short description, at most 100 characters
+    required: true
+  readme:
+    description: >-
+      Markdown file for the overview. Relative links in it are rewritten to
+      point at the file's folder on GitHub. Empty sends `overview` instead.
+    required: false
+    default: ""
+  overview:
+    description: Overview text, used when `readme` is empty
+    required: false
+    default: ""
+  categories:
+    description: >-
+      Space-separated category slugs, at most 3, from
+      https://hub.docker.com/v2/categories. Empty clears them.
+    required: false
+    default: ""
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: bash "$GITHUB_ACTION_PATH/sync.sh"
+      env:
+        DH_REPOSITORY: ${{ inputs.repository }}
+        DH_USERNAME: ${{ inputs.username }}
+        DH_TOKEN: ${{ inputs.token }}
+        DH_DESCRIPTION: ${{ inputs.description }}
+        DH_README: ${{ inputs.readme }}
+        DH_OVERVIEW: ${{ inputs.overview }}
+        DH_CATEGORIES: ${{ inputs.categories }}
+        DH_LINK_BASE: ${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}

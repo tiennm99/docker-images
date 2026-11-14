@@ -27,7 +27,7 @@ Underlying agent reports are committed under `plans/reports/` for self-contained
 | 1 | [High-severity correctness fixes](./phase-01-high-severity-correctness-fixes.md) | Pending |
 | 2 | [Dockerfile and workflow hygiene](./phase-02-dockerfile-and-workflow-hygiene.md) | Pending |
 | 3 | [Low-priority polish and consistency](./phase-03-low-priority-polish-and-consistency.md) | Pending |
-| 4 | [Workflow_call DRY refactor](./phase-04-workflow-call-dry-refactor.md) | Pending |
+| 4 | [Workflow_call DRY refactor](./phase-04-workflow-call-dry-refactor.md) | Superseded: one `publish.yml` reads each folder's `image.json` (2026-11-14) |
 
 ## Phase ordering rationale
 

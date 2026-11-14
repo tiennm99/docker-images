@@ -17,13 +17,46 @@ This repo uses Docker-Hub-style image names: `<service>:<full-version>`.
 
 - Subdirectory: `<service>-<major-line>/` (e.g. `couchbase-2.5/`, `scribe-2.2/`). Subdir holds the build context for one major version line.
 - GHCR + Docker Hub image: `<service>` (e.g. `couchbase`, `scribe`). No major-line suffix in the image name.
-- Workflow file: `publish-<service>-<major-line>.yml` (matches subdir for path-trigger clarity).
-- Tags published per workflow:
+- Tags published for each image:
   - `<full-version>` (e.g. `2.5.2`, `2.2`)
   - `<major-line>` (e.g. `2.5`) - optional alias
   - `latest` - canonical build of the only major line this repo carries for the service.
 
-If a second major line of the same service is ever added to this repo, drop `latest` from both workflows and publish `<major-line>-latest` tags instead.
+If a second major line of the same service is ever added to this repo, drop `latest` from both and publish `<major-line>-latest` tags instead.
+
+## Image config
+
+Each image folder holds an `image.json`, the one place for its registry metadata:
+
+```json
+{
+  "image": "couchbase",
+  "tags": ["2.5.2", "2.5", "latest"],
+  "description": "Short description, at most 100 characters",
+  "categories": ["databases-and-storage"]
+}
+```
+
+- `image`: the image name on GHCR and Docker Hub.
+- `tags`: every tag the image is published under.
+- `description`: the Docker Hub short description and the image's
+  `org.opencontainers.image.description` label.
+- `categories`: up to 3 Docker Hub category slugs from
+  <https://hub.docker.com/v2/categories>.
+
+The folder's `README.md`, when it has one, becomes the Docker Hub overview,
+with relative links pointed at GitHub. Without one, the overview lists the
+description, the tags and a link to the folder.
+
+[`publish.yml`](.github/workflows/publish.yml) builds every image folder a push
+to `main` changes, pushes it to both registries and then syncs the Docker Hub
+description and categories. Run it by hand to publish chosen folders, or with
+`metadata-only` to sync Docker Hub without building. The sync is the
+[`dockerhub-metadata`](.github/actions/dockerhub-metadata/action.yml) action,
+which other repos can use as
+`tiennm99/docker-images/.github/actions/dockerhub-metadata@main`. It needs a
+Docker Hub personal access token with read and write scope (the
+`DOCKER_PASSWORD` secret here).
 
 ## Couchbase-2.5
 

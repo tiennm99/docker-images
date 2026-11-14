@@ -1,0 +1,12 @@
+{
+  "image": "oraclejdk",
+  "tags": [
+    "8u201",
+    "8",
+    "latest"
+  ],
+  "description": "Legacy Oracle JDK 8u201 from the archived Oracle build",
+  "categories": [
+    "languages-and-frameworks"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "image": "couchbase",
+  "tags": [
+    "2.5.2",
+    "2.5",
+    "latest"
+  ],
+  "description": "Legacy Couchbase Server 2.5.2; no official image exists for this version",
+  "categories": [
+    "databases-and-storage"
+  ]
+}

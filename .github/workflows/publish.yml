@@ -1,0 +1,142 @@
+name: Publish images
+
+# Every folder with an image.json is one image. image.json names the image,
+# the tags it is published under, its Docker Hub short description and
+# categories. The folder's README.md, when there is one, becomes the Docker
+# Hub overview.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      images:
+        description: Space-separated image folders to publish, such as couchbase-2.5 (empty publishes all)
+        required: false
+        default: ""
+      metadata-only:
+        description: Only sync the Docker Hub description and categories; build nothing
+        type: boolean
+        default: false
+
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      images: ${{ steps.select.outputs.images }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: select
+        env:
+          EVENT: ${{ github.event_name }}
+          WANT: ${{ inputs.images }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          all=$(for f in */image.json; do dirname "$f"; done)
+          if [ "$EVENT" = workflow_dispatch ]; then
+            dirs=${WANT:-$all}
+          elif [ -z "$BEFORE" ] || [ "$BEFORE" = 0000000000000000000000000000000000000000 ] \
+            || git diff --name-only "$BEFORE" "$GITHUB_SHA" | grep -q '^\.github/\(workflows/publish\.yml\|actions/dockerhub-metadata/\)'; then
+            dirs=$all
+          else
+            dirs=$(git diff --name-only "$BEFORE" "$GITHUB_SHA" | cut -d/ -f1 | sort -u)
+          fi
+          images='[]'
+          for d in $dirs; do
+            if [ ! -f "$d/image.json" ]; then
+              [ "$EVENT" = workflow_dispatch ] && { echo "No image.json in $d" >&2; exit 1; }
+              continue
+            fi
+            images=$(jq -c --arg d "$d" --argjson acc "$images" \
+              '$acc + [{dir: $d} + .]' "$d/image.json")
+          done
+          echo "images=$images" >>"$GITHUB_OUTPUT"
+          echo "Selected: $(echo "$images" | jq -r 'map(.dir) | join(" ")')"
+
+  publish:
+    needs: select
+    if: needs.select.outputs.images != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJSON(needs.select.outputs.images) }}
+    name: ${{ matrix.image.dir }}
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    env:
+      DOCKERHUB_REPO: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.image.image }}
+      GHCR_REPO: ghcr.io/${{ github.repository_owner }}/${{ matrix.image.image }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - id: meta
+        env:
+          IMAGE: ${{ toJSON(matrix.image) }}
+          DIR: ${{ matrix.image.dir }}
+          FOLDER_URL: ${{ github.server_url }}/${{ github.repository }}/tree/${{ github.sha }}/${{ matrix.image.dir }}
+        run: |
+          {
+            echo "tags<<EOF"
+            echo "$IMAGE" | jq -r --arg hub "$DOCKERHUB_REPO" --arg ghcr "$GHCR_REPO" \
+              '.tags[] | "\($hub):\(.)", "\($ghcr):\(.)"'
+            echo "EOF"
+            readme=$DIR/README.md
+            [ -f "$readme" ] || readme=
+            echo "readme=$readme"
+            echo "categories=$(echo "$IMAGE" | jq -r '.categories // [] | join(" ")')"
+            echo "overview<<EOF"
+            echo "$IMAGE" | jq -r --arg url "$FOLDER_URL" \
+              '"# \(.image)\n\n\(.description)\n\nTags: \(.tags | map("`\(.)`") | join(", "))\n\nBuilt from [\(.dir)](\($url))."'
+            echo "EOF"
+          } >>"$GITHUB_OUTPUT"
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Log in to the Container registry
+        if: ${{ !inputs.metadata-only }}
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        id: push
+        if: ${{ !inputs.metadata-only }}
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: ${{ matrix.image.dir }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: |
+            org.opencontainers.image.description=${{ matrix.image.description }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+      - name: Generate artifact attestation
+        if: ${{ !inputs.metadata-only }}
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: ${{ env.GHCR_REPO }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+
+      - name: Sync Docker Hub description and categories
+        uses: ./.github/actions/dockerhub-metadata
+        with:
+          repository: ${{ env.DOCKERHUB_REPO }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          token: ${{ secrets.DOCKER_PASSWORD }}
+          description: ${{ matrix.image.description }}
+          readme: ${{ steps.meta.outputs.readme }}
+          overview: ${{ steps.meta.outputs.overview }}
+          categories: ${{ steps.meta.outputs.categories }}

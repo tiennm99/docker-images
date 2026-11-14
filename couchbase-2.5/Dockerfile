@@ -2,7 +2,6 @@ FROM ubuntu:12.04
 
 LABEL maintainer="Tien Nguyen Minh <tiennm99@outlook.com>"
 LABEL org.opencontainers.image.title="Couchbase Server 2.5"
-LABEL org.opencontainers.image.description="Legacy Couchbase Server (no official upstream image)"
 LABEL org.opencontainers.image.version="2.5.2"
 LABEL org.opencontainers.image.source="https://github.com/couchbase/docker"
 LABEL org.opencontainers.image.licenses="Apache-2.0"

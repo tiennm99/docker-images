@@ -1,0 +1,13 @@
+{
+  "image": "gradle",
+  "tags": [
+    "8.13",
+    "8",
+    "latest"
+  ],
+  "description": "Gradle 8.13 on Oracle JDK 8",
+  "categories": [
+    "developer-tools",
+    "integration-and-delivery"
+  ]
+}

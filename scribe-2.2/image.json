@@ -1,0 +1,11 @@
+{
+  "image": "scribe",
+  "tags": [
+    "2.2",
+    "latest"
+  ],
+  "description": "Facebook's legacy Scribe 2.2 real-time log aggregation daemon",
+  "categories": [
+    "monitoring-and-observability"
+  ]
+}
